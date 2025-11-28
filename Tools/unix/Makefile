@@ -3,7 +3,7 @@
 #
 
 .ONESHELL:
-.SHELLFLAGS = -cex
+.SHELLFLAGS = -ce
 
 UNAME := $(shell uname)
 ifeq ($(UNAME), Linux)
@@ -13,7 +13,7 @@ ifeq ($(UNAME), Darwin)
 	SUFFIX=osx
 endif
 
-SUBDIRS = OpenSpin uz80as zxcc cpmtools bin2asm lzsa
+SUBDIRS = OpenSpin uz80as zxcc cpmtools bin2asm lzsa compress
 
 all:
 	@chmod +x casefn.sh

@@ -6,5 +6,14 @@ programming language. It was one of their early core languages developed for the
 rebranded the product as Microsoft Fortran Powerstation. (Note: -80 refers to
 the 8080/Z80 platform, not the language specification version)
 
-The user manual is available in the Doc directory,
+The user manual is available in the Doc/Language directory,
 Microsoft_FORTRAN-80_Users_Manual_1977.pdf
+
+== Sample Application ==
+
+This disk image includes a very small sample application called
+HELLO.FOR that can be used to demonstrate the build process.  The
+following commands will build this sample application.
+
+f80 hello,hello=hello
+l80 hello,forlib/s,hello/n,/e:hellow

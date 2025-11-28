@@ -8,9 +8,11 @@ pushd QPM && call Clean.cmd & popd
 pushd ZCPR && call Clean.cmd & popd
 pushd ZCPR-DJ && call Clean.cmd & popd
 pushd ZSDOS && call Clean.cmd & popd
+pushd ZSDOS2 && call Clean.cmd & popd
 pushd CBIOS && call Clean.cmd & popd
 pushd CPM3 && call Clean.cmd & popd
 pushd ZPM3 && call Clean.cmd & popd
+pushd CPNET && call Clean.cmd & popd
 pushd pSys && call Clean.cmd & popd
 pushd Forth && call Clean.cmd & popd
 pushd TastyBasic && call Clean & popd
@@ -24,3 +26,5 @@ pushd Doc && call Clean & popd
 pushd ZRC && call Clean & popd
 pushd Z1RCC && call Clean & popd
 pushd ZZRCC && call Clean & popd
+pushd MSX && call Clean & popd
+pushd EZ512 && call Clean & popd
