@@ -923,7 +923,7 @@ Users should not remove this check from the templated code.
 
 If required, the user application may make use of the Z80 interrupt system
 but if the user application wishes to rely on HBIOS functionality then it
-must adhere to the HBIOS framework for managing interupts. Alternatively,
+must adhere to the HBIOS framework for managing interrupts. Alternatively,
 if the user application has no need for the HBIOS then it may use its own
 custom code for handling interrupts. In that case, a hard reset, rather
 than an HBIOS warm start, would be necessary to return control to RomWBW.
@@ -988,6 +988,7 @@ included within RomWBW may be found within the Binary/Apps directory.
 | TIMER       | Yes      | Yes        |
 | TUNE        | No       | Yes        |
 | VGMPLAY     | No       | Yes        |
+| VGMINFO     | No       | Yes        |
 | WDATE       | No       | Yes        |
 | XM          | Yes      | Yes        |
 | ZMD         | No       | Yes        |
@@ -1022,7 +1023,7 @@ of additional applications stored in the ```USER 2``` area of the disk. These ap
 do not form part of CP/M, but rather are small utilities used for test purposes during development work.
 They may, or may not, function correctly with any given hardware or software configuration.
 Documentation for these utilities is very limited, though the source files may be found
-in the /Source folder. Note that these utiltites are not available when starting CP/M
+in the /Source folder. Note that these utilities are not available when starting CP/M
 from the ROM image or from a floppy disk.
 
 A number of the CP/M applications available are described in more detail in
@@ -1158,7 +1159,7 @@ Will first assign drives `A:(Boot), B:(RAM), C:(ROM)` this leaves 13 drives
 which will be assigned to slices from the boot hard drive (D: thru P:),
 leaving no unused drives.
 
-'H'ard drive assignment will attempt to fill all remaining drive letters
+`H`ard drive assignment will attempt to fill all remaining drive letters
 by splitting the number of drives remaining evenly across all.
 
 e.g. `ASSIGN /B=BAOH`
@@ -1241,6 +1242,12 @@ Additionally, the `ASSIGN` command must be able to adjust to CP/M 2.2
 vs. CP/M 3.  If you utilize an RSX that modifies the BDOS version
 returned, you are likely to have serious problems.  In this case, be
 sure to use `ASSIGN` prior to loading the RSX or after it is unloaded.
+
+When `ASSIGN` assigns a drive letter to an area on disk (slice), it
+does **not** initialize this area.  If it was previously initialized,
+it will be ready to use with whatever data was previously stored there.
+If it has not been previously initialized, you should use `CLRDIR` to
+initialize it before attempting to use it.
 
 #### Etymology
 
@@ -1495,7 +1502,7 @@ and unused blocks are not copied.
 If a filesystem is not found, (or the /F option is chosen) all data is
 copied.
 
-Verification (if option chosen) will do an aditional read (after write)
+Verification (if option chosen) will do an additional read (after write)
 and compare the data read matches what was written. This compare is only
 on every 32'nd byte. This is done for efficiency.
 
@@ -2149,7 +2156,7 @@ of files; the storage capacity occupied by those files; and the capacity
 remaining on that drive.
 
 1. Information about the the 64KByte CP/M memory map, which is shown
-diagramatically, and includes: locations and sizes of the TPA (Transient Program Area),
+diagrammatically, and includes: locations and sizes of the TPA (Transient Program Area),
 CP/M's CCP (Console Command Processor),and BDOS (Basic Disk Operating System).
 
 1. The addresses of active CPU I/O ports.
@@ -2640,6 +2647,67 @@ The source code is provided in the RomWBW distribution.
 
 `\clearpage`{=latex}
 
+## VGMINFO (Video Game Music File Information)
+
+| VGMPLAY             |   |
+| --------------------|---|
+| ROM-based           |No |
+| Disk-based          |Yes|
+
+A utility that scans all .VGM files in the current directory and
+displays a table showing which audio chips each file uses.
+
+Version 1.1 uses a hybrid detection approach:
+
+- Checks VGM header clock values to detect chip types
+- Scans VGM command stream to detect multiple instances of same chip type
+
+#### Syntax
+
+| `VGMINFO`
+
+#### Usage
+
+No command line arguments are needed. The program will automatically scan
+all .VGM files in the current directory.
+
+The program displays a formatted table with two columns:
+
+  - Filename: The name of the VGM file
+  - Chips Used: A comma-separated list of audio chips used in that file
+
+The program can detect the following audio chips:
+
+  - SN76489 (PSG - Programmable Sound Generator)
+  - YM2612 (FM Synthesis chip used in Sega Genesis/Mega Drive)
+  - YM2151 (OPM - FM Operator Type-M)
+  - YM3812 (OPL2 - FM synthesis chip)
+  - YMF262 (OPL3 - Enhanced FM synthesis chip)
+  - AY-3-8910 (PSG used in many arcade and home computers)
+
+#### Notes
+
+- The program reads the VGM file headers and scans up to 255 commands from
+  the VGM data stream for accurate chip detection.
+  
+- Files that don't have a valid VGM header are silently skipped.
+
+- Chip detection uses a hybrid approach:
+  * VGM header clock values (offsets 0x0C, 0x2C, 0x30, 0x74) determine
+    which chip types are present
+  * Command stream scanning detects multiple instances (e.g., "2xSN76489")
+
+- AY-3-8910 clock detection respects VGM version - only checked for v1.51+
+  to avoid false positives from invalid header data in older VGM versions.
+
+#### Etymology
+
+The `VGMINFO` application was written and contributed to RomWBW by
+Joao Miguel Duraes.  An AI LLM was utilized in the creation of this
+application.
+
+`\clearpage`{=latex}
+
 ## VGMPLAY (Video Game Music Play)
 
 | VGMPLAY             |   |
@@ -2713,7 +2781,7 @@ CPU speed: Autodetected
 | YM2151    |  1st    | 0cah     | stereo
 | YM2151    |  2nd    | 0cbh     | stereo
 
-Inconsistant, garbled or distorted playback can be an indication that
+Inconsistent, garbled or distorted playback can be an indication that
 your CPU clock speed is too high for your sound chip. In this case, if
 your platform supports speed switching, then the CPUSPD application
 can be used to reduce your processor speed.
@@ -2788,7 +2856,7 @@ Show a summary of the command-line usage.
 #### Notes
 
 I've tested this utility with the DS1302 clock board designed by Ed
-Brindly, and on the interrupt-driven timer built into my Z180 board.
+Brindley, and on the interrupt-driven timer built into my Z180 board.
 However, it does not interact with hardware, only BIOS; I would expect
 it to work with other hardware.
 

@@ -124,7 +124,7 @@ The basic steps to create a custom ROM are:
 
   3) Run the build scripts and confirm there are no errors.
 
-  4) Program the resultant ROM image and/or write thedisk images.
+  4) Program the resultant ROM image and/or write the disk images.
 
 Note that steps 1 and 2 are performed to customize your ROM as 
 desired.  If you want to simply build a standard configuration, it is 
@@ -183,6 +183,7 @@ to determine the <plt> component of the configuration filename:
 	N8		MSX-ish Z180 SBC w/ onboard video and sound
 	MK4		Mark IV Z180 based SBC w/ ECB interface
 	UNA		Any Z80/Z180 computer with UNA BIOS
+	RC2014		Official RC2014 Z80 System
 	RCZ80		RCBUS based system with 512K banked RAM/ROM card
 	RCZ180		RCBUS based system with Z180 CPU
 	EZZ80		Easy Z80, Z80 SBC w/ RCBUS and CTC
@@ -200,6 +201,7 @@ to determine the <plt> component of the configuration filename:
 	GMZ180		Doug Jacksons' Genesis Z180 System
 	NABU		NABU w/ Les Bird's RomWBW Option Board
 	FZ80		S100 Computers FPGA Z80
+	N8PC		MSX-ish Z180 ATX SBC w/ onboard video and sound
 
 Configuration files are found in the Source\HBIOS\Config 
 directory.  If you look in the this directory, you will see a 
@@ -341,7 +343,7 @@ the specific platform and configuration for your ROM.  For platform, be
 sure to enter the platform identifier that corresponds to the ROM you
 are creating.  The prompt will look something like this:
 
-    Platform [SBC|MBC|ZETA|ZETA2|RCZ80|EZZ80|UNA|N8|MK4|RCZ180|SCZ180|DYNO|RCZ280]:
+    Platform [SBC|MBC|ZETA|ZETA2|RC2014|RCZ80|EZZ80|UNA|N8|MK4|RCZ180|SCZ180|DYNO|RCZ280|N8PC]:
 
 You will subsequently be prompted for the specific configuration that
 you want to build.  It will display the available possibilities based

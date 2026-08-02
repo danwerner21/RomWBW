@@ -201,6 +201,7 @@ static const struct matchtab s_matchtab_z80[] = {
 	{ "TST a", "ED.64.d0.", 2, 0, "e8" },
 	{ "TSTIO a", "ED.74.d0.", 2, 0, "e8" },
 	/* Z280 added instructions */
+	/* VERY incomplete, just enuough to build RomWBW */
 	{ "PCACHE", "ED.65.", 4, 0 },
 	{ "LDCTL (C),HL", "ED.6E.", 4, 0 },
 	{ "LDCTL HL,(C)", "ED.66.", 4, 0 },
@@ -289,7 +290,14 @@ static int gen_z80(int *eb, char p, const int *vs, int i, int savepc)
 	switch (p) {
 	case 'f': b |= (vs[i] << 4); break;
 	case 'g': b |= (vs[i] << 6); break;
-	case 'i': b = (vs[i] - savepc - 2); break;
+	case 'i': b = (vs[i] - savepc - 2);
+		  if (s_pass > 0 && (b < -128 || b > 127)) {
+			  eprint(_("range of relative branch exceeded (%d)\n"),
+				b);
+			  eprcol(s_pline, s_pline_ep);
+			  newerr();
+		  }
+		  break;
 	case 'j': if (s_pass > 0 && (vs[i] & ~56) != 0) {
 			  eprint(_("invalid RST argument (%d)\n"),
 				vs[i]);

@@ -11,13 +11,21 @@
 /* Max symbol length + '\0'. */
 #define SYMLEN		32
 
+enum {
+	SYM_FLAG_ADR = 1,
+	SYM_FLAG_EQU = 2,
+	SYM_FLAG_EXPORT = 4
+};
+
 struct sym {
 	char name[SYMLEN];		/* null terminated string */
 	int val;			/* value of symbol */
 	unsigned short next;		/* index into symlist; 0 is no next */
-	unsigned char isequ;		/* if val comes from EQU */
+	unsigned short flags;		/* SYM_FLAG_X */
 };
 
 struct sym *lookup(const char *p, const char *q, int insert, int pc);
+int anything_to_export(void);
+void write_export_file(const char *fname);
 
 #endif

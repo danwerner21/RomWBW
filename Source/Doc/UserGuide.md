@@ -63,16 +63,28 @@ downloading it to a working directory on your modern computer
 (Windows/Linux/Mac) use any zip tool to extract the contents of the
 archive.
 
-The Binary directory of the distribution contains the pre-built ROM images.  
-Refer to $doc_hardware$ to identify the correct ROM image for your system.
+A complete list of the currently supported platforms is found at the
+beginning of $doc_hardware$.  You must refer to this document to
+identify your hardware and the associated ROM Image.
 
-A complete list of the currently supported platforms is found in
-$doc_hardware$. You must burn the correct ROM image that matches your hardware
+The Binary directory of the distribution contains the pre-built ROM
+images.  There are many files in the Binary directory, but you
+should be able to locate the ROM Image you identified in 
+$doc_hardware$.  This file which should end in ".rom" must be
+written to your ROM chip.
 
 Once you have a running RomWBW system, you can generally update your ROM
 to a newer version in-situ with the included ROM Flashing tool (Will 
 Sowerbutts' FLASH application) as described in the [Upgrading] chapter
 of this document.
+
+### Disk Loaded ROM Images
+
+Some hardware platforms do not have sufficient ROM capacity for RomWBW.  These
+platforms have their own ROM which can load the RomWBW ROM Image from disk.  The
+platforms that work this way are annotated in $doc_hardware$.  For these
+platforms, you will write a special disk image to the boot disk of your
+system.  The disk image is listed in the "ROM Image File" column.
 
 ## System Startup
 
@@ -433,7 +445,7 @@ Play which uses `Q`.
 **NOTE:** Of the ROM Applications, only the operating systems (CP/M and 
 Z-System) have the ability to interact with disk drives. So, other than 
 these 2 OSes, the ROM Applications do **not** have any way to save or 
-load data from peristent/disk storage.  For example, if you launch BASIC
+load data from persistent/disk storage.  For example, if you launch BASIC
 from the Boot Loader, you will not be able to save or load your 
 programs.  You will need to start an operating system first and then run
 BASIC in order to save or load programs.
@@ -1627,7 +1639,7 @@ CP/M 2.2 or Z-System from ROM again.
 #### FAT Partition
 
 At this point you may want to consider creating a FAT partition
-Please see the section [FAT Filesystem Preparation] for detils on how
+Please see the section [FAT Filesystem Preparation] for details on how
 to setup the FAT partition.
 
 ### Slice Initialization
@@ -1789,12 +1801,11 @@ The following table shows the disk images available.
 | xxx_games.img     | Games Disk for CP/M                  | No       |
 | xxx_hitechc.img   | HI-TECH Z80 CP/M C compiler          | No       |
 | xxx_infocom.img   | Infocom Games Disk                   | No       |
-| xxx_msxroms1.img  | MSX ROMs Disk 1                      | No       |
-| xxx_msxroms2.img  | MSX ROMs Disk 2                      | No       |
 | xxx_nzcom.img     | NZCOM ZCPR 3.4 Operating System      | Yes      |
 | xxx_qpm.img       | QPM Operating System                 | Yes      |
 | xxx_tpascal.img   | Borland Turbo Pascal Compiler        | No       |
 | xxx_wp.img        | WordStar v4 & ZDE Applications       | No       |
+| xxx_z3plus.img    | Z3PLUS ZCPR 3.4 Operating System     | Yes      |
 | xxx_z80asm.img    | Relocating macro assembler for CP/M  | No       |
 | xxx_zpm3.img      | ZPM3 Operating System                | Yes      |
 | xxx_zsdos.img     | ZCPR-DJ & ZSDOS 1.1 Operating System | Yes      |
@@ -2030,17 +2041,17 @@ ready to write to your media.
 
 You can add slices to the Combo Disk Images simply by tacking
 slices onto the end.  For example, if you want to add a slice
-containing the MSX ROMs to the end of the combo image, you could
+containing the Fortran compiler to the end of the combo image, you could
 use one of the following command lines depending on your operating
 system:
 
 Windows:
 
-`COPY /B hd1k_combo.img + hd1k_msxroms.img my_hd.img` 
+`COPY /B hd1k_combo.img + hd1k_fortran.img my_hd.img` 
 
 Linus/MaxOS:
 
-`cat hd1k_combo.img hd1k_msxroms.img >my_hd.img`
+`cat hd1k_combo.img hd1k_fortran.img >my_hd.img`
 
 Note that you **must** be sure to use either the hd1k_ or hd512_
 prefixed files together.  You cannot mix them.
@@ -2077,7 +2088,7 @@ Linux/MacOS:
 `cat hd1k_prefix.dat hd1k_cpm22.img hd1k_cpm3.img hd1k_ws >hd.img`
 
 > **Note**: Apart from the hd1k_prefix.dat file (mentioned above)
-> there are actaully a number of other `hd1k_*_prefix.dat` files. These
+> there are actually a number of other `hd1k_*_prefix.dat` files. These
 > additional prefix files are platform (generally romless) specific,
 > and should be ignored unless you are on one of these platforms.
 > If you are on one of these platforms you must use the correct prefix file
@@ -3224,7 +3235,7 @@ update the date/time of the RTC in the RomWBW Boot Loader or Monitor.
 
 ## Date/Time Utilities
 
-RomwWBW includes two utilities for displaying or setting the date/time
+RomWBW includes two utilities for displaying or setting the date/time
 stored by the RTC.  They are both a bit different and are briefly
 described below.
 
@@ -3258,7 +3269,7 @@ Like `WDATE`, the `RTC` utility (contributed by Andrew Lynch) will let
 you display and set the current date/time.  However, this utility only
 works with the DSRTC hardware (DS1302 chip).  It is a "direct to
 hardware application".  Its operation is described in $doc_apps$.  Here
-is an example of displaying and updatting the date/time with this
+is an example of displaying and updating the date/time with this
 utility:
 
 ```
@@ -3357,7 +3368,7 @@ Press any key to quit...
 Since this runs at the CPM driver level it is useful as an end-to-end test
 to prove that date time stamping is able to read the correct time
 
-The `TESTCLOK` utility is provided by ZSDOS, plese see the ZSDOS Manual 
+The `TESTCLOK` utility is provided by ZSDOS, please see the ZSDOS Manual 
 for further information
 
 ## Date/Time File Stamping
@@ -3784,7 +3795,7 @@ provided by the network server.  The supported hardware is:
 - RCBus System w/ MT011 including:
   - Featherwing WizNet W5500
   - SPI FRAM on secondary SPI interface (CS2)
-- Doudyne Disk I/O Board including:
+- Duodyne Disk I/O Board including:
   - WIZ850io Module
   - 25LCxxx Serial SPI EEPROM
   
@@ -4398,7 +4409,7 @@ ROM image.
 From the Boot Loader menu select X (Xmodem Flash Updater) and then
 U (Begin Update). Then initiate the Xmodem transfer of the `.rom` file.
 Since the XModem Flash Updater will be relatively slow, you may wish
-to use the `.upd` varient of the ROM.
+to use the `.upd` variant of the ROM.
 
 More information can be found in the ROM Applications document.
 

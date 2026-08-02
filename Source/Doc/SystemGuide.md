@@ -306,7 +306,7 @@ refer to the documentation of your hardware provider for that.
 
 Z2:
 
-: Memory memory manager introduced by Sergey Kiselv in the Zeta 2 SBC.
+: Memory manager introduced by Sergey Kiselev in the Zeta 2 SBC.
 Popular in many RCBus systems.
 
 Z180:
@@ -346,7 +346,7 @@ The memory manager used is determined by the configuration choices
 that are part of a RomWBW build process.  A given ROM can only have a
 single memory manager -- it is not selected dynamically.
 
-The configuration variable `MEMMGR` sets the memory mannager used by
+The configuration variable `MEMMGR` sets the memory manager used by
 the ROM build.  It must be set to one of the above memory manager
 types.  For example, for the Z2 memory manager, `MEMMGR` should be set
 to `MM_Z2`.
@@ -358,7 +358,7 @@ are used interchangeably in the documentation and code.
 
 ## Floppy Disk Layout
 
-RomWBVW generally handles floppy disks in the same physical formats
+RomWBW generally handles floppy disks in the same physical formats
 as MS-DOS.  However, the filesystem will normally be CP/M.  The following
 table lists the floppy disk formats used by RomWBW.  In all cases,
 the sector size is 512 bytes.
@@ -1101,6 +1101,7 @@ below enumerates their values.
 | DIODEV_CHSD     | 0x0E   | CH375/376 SD Card                        | ch.asm     |
 | DIODEV_USB      | 0x0F   | CH376 Native USB Device                  | ch376.asm  |
 | DIODEV_ESPSD    | 0x10   | S100 ESP32 SD Card                       | espsd.asm  |
+| DIODEV_SCSI     | 0x11   | 5380 SCSI Interface                      | scsi.asm   |
 
 A fixed set of media types are defined. The currently defined media 
 types identifiers are listed below. Each driver will support one or
@@ -2530,7 +2531,7 @@ The Device Attributes (B) are the same as defined in
 
 If the Unit specified is not a hard disk the Media ID will be returned and
 the slice parameter ignored. If there is no media in device, or the slice
-number is invaid (Parameter Out Of Range) the function will return an error status.
+number is invalid (Parameter Out Of Range) the function will return an error status.
 
 **NOTE:** This function was placed in HBIOS to be shared between the different CP/M
 variants supported by RomWBW. It is not strictly a BIOS function,
@@ -2618,6 +2619,11 @@ The hardware Platform (L) is identified as follows:
 | PLT_NABU      |     22 | NABU PC W/ ROMWBW OPTION BOARD          |
 | PLT_SZ80      |     23 | S100 COMPUTERS Z80                      |
 | PLT_RCEZ80    |     24 | RCBUS W/ eZ80                           |
+| PLT_MSX       |     25 | MSX Computers                           |
+| PLT_N8PC      |     26 | MSX-like Z180 ATX SBC                   |
+| PLT_RC2014    |     27 | Official RC2014 Z80 Kits                |
+| PLT_MECB      |     28 | Digicool Things MECB Kits               |
+
 
 For more information on these platforms see $doc_hardware$
 
@@ -2986,7 +2992,7 @@ HBIOS result code.
 
 This function returns information about the active CPU environment. The 
 Z80 CPU Variant (H) will be one of: 0=Z80, 1=Z180, 2=Z180-K, 3=Z180-N, 
-4=Z280.  The current CPU speed is provided as both CPU Speed MHz (L) and
+4=Z280, 5=eZ80.  The current CPU speed is provided as both CPU Speed MHz (L) and
 CPU Speed KHz (DE).  The raw oscillator speed is provided as Oscillator
 Speed KHz (BC).  The returned Status (A) is a standard HBIOS result 
 code.
@@ -3035,7 +3041,7 @@ Wait States (D) is the actual number of wait states, not the number
 of wait states added.  The returned Status (A) is a standard HBIOS 
 result code.
 
-#### SYSGET Subfunction 0xF4 -- Get Front Panel Swithes (PANEL)
+#### SYSGET Subfunction 0xF4 -- Get Front Panel Switches (PANEL)
 
 | **Entry Parameters**                   | **Returned Values**                    |
 |----------------------------------------|----------------------------------------|
@@ -3148,6 +3154,9 @@ This function sets information about the most recent boot operation
 performed.  It includes the Boot Bank ID (L), the Boot Disk Unit (D), 
 and the Boot Disk Slice (E).  The returned Status (A) is a standard 
 HBIOS result code.
+
+This information is recorded in the HCB.  HCB_BOOTBID is set to the Boot
+Bank ID (L) and HCB_BOOTVOL is set to the BootDisk Unit/Slice (DE).
 
 #### SYSSET Subfunction 0xF3 -- Set CPU Speed (CPUSPD)
 

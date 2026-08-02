@@ -15,6 +15,11 @@ LCD_FUNC	.EQU	LCDBASE + 0	; WRITE
 LCD_STAT	.EQU	LCDBASE + 0	; READ
 LCD_DATA	.EQU	LCDBASE + 1	; READ/WRITE
 ;
+#IF (LCDENABLE & LCDI2CENABLE)
+	.ECHO	"*** ERROR: LCDENABLE AND LCDI2CENABLE CANNOT BOTH BE TRUE -- CHOOSE ONE!!!\n"
+	!!!	; FORCE AN ASSEMBLY ERROR
+#ENDIF
+;
 LCD_ROWS	.EQU	4
 LCD_COLS	.EQU	20
 ;
@@ -34,6 +39,24 @@ LCD_FUNC_DDADR	.EQU	$80		; SET DDRAM ADDRESS
 	DEVECHO	"X"
 	DEVECHO	LCD_ROWS
 	DEVECHO	"\n"
+;
+;--------------------------------------------------------------------------------------------------
+;   HBIOS MODULE HEADER
+;--------------------------------------------------------------------------------------------------
+;
+ORG_LCD	.EQU	$
+;
+	.DW	SIZ_LCD		; MODULE SIZE
+	.DW	LCD_INITPHASE		; ADR OF INIT PHASE HANDLER
+;
+LCD_INITPHASE:
+	; INIT PHASE HANDLER, A=PHASE
+	CP	HB_PHASE_PREINIT	; PREINIT PHASE?
+	JP	Z,LCD_PREINIT		; DO PREINIT
+	CP	HB_PHASE_INIT		; INIT PHASE?
+	JP	Z,LCD_INIT		; DO INIT
+	RET				; DONE
+
 ;
 ; HARDWARE RESET PRIOR TO ROMWBW CONSOLE INITIALIZATION
 ;
@@ -500,6 +523,7 @@ LCD_STR_IO	.DB	"Disk #", 0
 LCD_STR_XPU	.DB	" CPU",0
 LCD_STR_MHZ	.DB	" MHz",0
 ;
+; INDEXED AS PER CPT_xxx
 LCD_CPU		.DW	LCD_CPU_Z80
 		.DW	LCD_CPU_Z180
 		.DW	LCD_CPU_Z180K
@@ -528,3 +552,14 @@ LCD_MSG_LDR_LOAD	.DB	"Load...",0
 LCD_MSG_LDR_GO		.DB	"Go...",0
 LCD_MSG_MON_RDY		.DB	"-CPU UP-",0
 LCD_MSG_MON_BOOT	.DB	"Boot!",0
+;
+;--------------------------------------------------------------------------------------------------
+;   HBIOS MODULE TRAILER
+;--------------------------------------------------------------------------------------------------
+;
+END_LCD	.EQU	$
+SIZ_LCD	.EQU	END_LCD - ORG_LCD
+;	
+	MEMECHO	"LCD occupies "
+	MEMECHO	SIZ_LCD
+	MEMECHO	" bytes.\n"

@@ -18,7 +18,7 @@ RomWBW.  Although input is gladly accepted from almost any channel, the
 GitHub Repository is preferred.
 
 - Use **Issues** to report bugs, request enhancements, or ask usage
-  questions.
+  questions
 - Use **Discussions** to interact with others
 - Use **Pull Requests** to submit content (code, documentation, etc.)
 
@@ -41,7 +41,26 @@ Requests.
 - You are encouraged to comment your submissions to ensure your work is
   properly attributed.
 - When ready, submit a Pull Request to merge your forked branch into the
-  RomWBW master branch.
+  RomWBW master branch.  In the comments, please indicate if an
+  AI LLM was utilized in any way.
+
+## Artificial Intelligence
+
+RomWBW seeks to satisfy the broadest possible audience. Since many of the
+projects utilizing RomWBW are intended to be retro-computing
+initiatives, the use of AI generated code may legitimately undermine this
+objective.  This is a philosophical perspective, not a judgment of
+AI's technical capabilities.
+
+RomWBW is intended to be free of AI (LLM) generated code. The use of AI
+during development to understand or research potential solutions is fine.
+Additionally, forks or derivatives of RomWBW are free to use AI as they
+desire.
+
+The one exception to this policy is that AI generated, standalone
+**applications** are acceptable if they are clearly annotated as such in
+the RomWBW Applications Guide.  The use of AI should be described in the
+comments of the source file(s) involved.
 
 ## Coding Style
 
@@ -50,7 +69,7 @@ styles.  When making changes to existing code, please try to be
 consistent with the existing coding style.  You may not like the current
 style, but no one likes mixed styles in one file/module.
 
-Be careful with white space.  RomWBW is primarily assembly langauge
+Be careful with white space.  RomWBW is primarily assembly language
 code.  The use of tab stops at every 8 characters is pretty standard for
 assembler.  If you use something else, then your code will look odd
 when viewed by others.
@@ -77,7 +96,7 @@ not magically added by the tools that generate the disk images.
 	LD	A,0+(5+5)	; Load A with the value 10
 ```
 
-- The RomWBW documewntation in the Doc directory is generated with a
+- The RomWBW documentation in the Doc directory is generated with a
   process outside of the normal build process.  To update documentation,
   please update the .md files in Source/Doc.  Those are the Markdown
   source files for the documentation.  The PDF files will be updated

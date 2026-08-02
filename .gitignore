@@ -45,6 +45,7 @@ Source/CPM3/options.lib
 Source/CPM3/zpmbios3.spr
 Source/HBIOS/Blank512KB.dat
 Source/HBIOS/build.inc
+Source/HBIOS/ch376-native/**/*.asm
 Source/Images/blank144
 Source/Images/blankhd
 Source/Prop/Spin/ParPortProp.list
@@ -62,6 +63,7 @@ Tools/Linux
 Tools/Darwin
 
 Tools/unix/bin2asm/bin2asm
+Tools/unix/compress/compress
 Tools/unix/cpmtools/cpmchattr
 Tools/unix/cpmtools/cpmchmod
 Tools/unix/cpmtools/cpmcp
@@ -101,6 +103,7 @@ Tools/unix/zx/zx
 !Source/Z1RCC/*.bin
 !Source/ZZRCC/*.bin
 !Source/SZ80/*.bin
+!Source/MSX/d_fat/**
 !Tools/cpm/**
 !Tools/unix/zx/*
 !Tools/zx/*
